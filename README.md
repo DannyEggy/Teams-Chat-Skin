@@ -82,7 +82,7 @@ Installed builds (`.dmg` / `.exe`) bundle the CSS, so rebuild after editing a th
 
 ## Security
 
-- **Isolation**: Teams runs in a sandboxed renderer with context isolation and no Node.js access. The app has no preload script and gives the page no access to your files or system.
+- **Isolation**: Teams runs in a sandboxed renderer with context isolation and no Node.js access. The only preload script turns off passkeys on macOS (see Limitations); it exposes nothing to the page and gives it no access to your files or system.
 - **Permissions**: notifications, camera, microphone, clipboard and screen capture are granted only to Microsoft HTTPS pages. Other sites the window reaches (for example a company sign-in page) get nothing.
 - **Screen sharing** always asks which screen or window to share (the macOS system picker, or the app's own dialog). Nothing is shared silently.
 - **Links** outside Microsoft open in your default browser, not inside the app.
@@ -98,6 +98,7 @@ Found a security problem? Please open an issue on GitHub.
 ## Limitations
 
 - **Conditional Access**: some organisations only allow sign-in from managed browsers or devices (Intune, Edge with SSO). The app identifies itself as Edge, but sign-in can still be blocked if your organisation checks the device. The app cannot work around that.
+- **Passkeys on macOS**: Electron has no passkey / Touch ID prompt on macOS, so the app turns passkeys off there and Microsoft offers other sign-in methods instead: password, a code by email or SMS, or the Microsoft Authenticator app. If your account only has a passkey, add another method at [account.microsoft.com/security](https://account.microsoft.com/security) in a normal browser first.
 - **Teams updates**: Microsoft changes the Teams DOM often, so parts of a theme can break after an update. Turn the theme off (⌘⇧M), export the DOM outline and adjust the CSS.
 - The Windows build has been built and checked on a Mac, but not yet run on a real Windows machine.
 

@@ -516,6 +516,7 @@ function createWindow() {
       nodeIntegration: false,
       sandbox: true,
       spellcheck: true,
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
   if (settings.isMaximized) mainWindow.maximize();
