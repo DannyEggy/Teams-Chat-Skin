@@ -8,6 +8,10 @@ Themes:
 - **Messenger – Classic**: white background, blue bubbles
 - **Zalo**: blue side rail, flat chat list, light-blue bubbles
 
+## Why this exists
+
+This is a just-for-fun side project: an experiment in vibe coding, built with an AI coding assistant. It is not a commercial product. It is not sold, has no paid version and is not meant to make money. Feel free to try it, fork it and play with the themes.
+
 ## Run from source (macOS and Windows)
 
 Requires [Node.js](https://nodejs.org) 18 or later (LTS recommended).
