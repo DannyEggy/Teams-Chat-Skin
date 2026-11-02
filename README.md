@@ -1,10 +1,16 @@
-# Teams Messenger
+# Teams Chat Skin
 
-App desktop (Electron) không chính thức, bọc Microsoft Teams bản web, kèm giao diện kiểu Messenger và Zalo. Không cần quyền admin, chỉ cần đăng nhập tài khoản công ty như bình thường.
+An unofficial desktop app (Electron) for Microsoft Teams that wraps Teams on the web and restyles it to look like Messenger or Zalo. No admin rights needed: sign in with your work or school account as usual.
 
-## Chạy từ mã nguồn (macOS và Windows)
+Themes:
 
-Cần [Node.js](https://nodejs.org) bản 18 trở lên (khuyên dùng bản LTS).
+- **Messenger – Love**: lavender chat background with hearts, pink bubbles (default)
+- **Messenger – Classic**: white background, blue bubbles
+- **Zalo**: blue side rail, flat chat list, light-blue bubbles
+
+## Run from source (macOS and Windows)
+
+Requires [Node.js](https://nodejs.org) 18 or later (LTS recommended).
 
 ```bash
 git clone https://github.com/DannyEggy/Teams-Chat-Skin.git
@@ -13,66 +19,84 @@ npm install
 npm start
 ```
 
-Đăng nhập một lần là được, phiên đăng nhập được lưu lại trên máy (không nằm trong thư mục code).
+Sign in once; the session is kept on your machine, outside the project folder.
 
-Lệnh giống nhau trên macOS (Terminal) và Windows (PowerShell / Command Prompt). `npm start` tự bỏ biến `ELECTRON_RUN_AS_NODE` mà VS Code hay bật sẵn, nên chạy từ terminal nào cũng được.
+The commands are the same in Terminal (macOS) and PowerShell or Command Prompt (Windows). `npm start` clears the `ELECTRON_RUN_AS_NODE` variable that VS Code sets in its terminal, so it works from any terminal.
 
-## Build ra file cài
+## Build an installer
 
-| Lệnh | Kết quả trong `dist/` | Cho máy |
+| Command | Output in `dist/` | For |
 |---|---|---|
-| `npm run dist:mac` | `Teams Messenger-1.0.0-arm64.dmg` | Mac chip Apple (M1 trở lên) |
-| `npm run dist:win` | `Teams Messenger Setup 1.0.0.exe` | Windows 64-bit |
+| `npm run dist:mac` | `Teams Messenger-1.0.0-arm64.dmg` | Apple silicon Macs (M1 and later) |
+| `npm run dist:win` | `Teams Messenger Setup 1.0.0.exe` | 64-bit Windows |
 
-Build bản Windows chạy được ngay trên Mac. Bản Mac thì phải build trên Mac.
+The Windows installer can be built on a Mac. The macOS build must be made on a Mac.
 
-App chưa ký số, nên lần đầu mở:
-- **macOS**: chuột phải vào app → **Open** → **Open**. Vẫn bị chặn thì chạy `xattr -cr "/Applications/Teams Messenger.app"`.
-- **Windows**: SmartScreen báo "Windows protected your PC" → **More info** → **Run anyway**.
+The builds are not code-signed, so the first launch shows a warning:
 
-## Phím tắt
+- **macOS**: right-click the app → **Open** → **Open**. If it is still blocked, run `xattr -cr "/Applications/Teams Messenger.app"`.
+- **Windows**: SmartScreen shows "Windows protected your PC" → **More info** → **Run anyway**.
 
-Trên Windows thay ⌘ bằng Ctrl. Thanh menu trên Windows bị ẩn, nhấn **Alt** để hiện.
+## Using the app
 
-| Phím | Chức năng |
+Pick a theme in **View → Giao diện**. Your choice is remembered.
+
+| Shortcut | Action |
 |---|---|
 | ⌘R | Reload Teams |
-| ⌘⇧M | Bật/tắt theme |
+| ⌘⇧M | Turn the theme on or off |
 | ⌘⇧R | Reload theme CSS |
-| ⌥⌘I | DevTools |
-| ⌘+ / ⌘- / ⌘0 | Phóng to / thu nhỏ / về mặc định |
-| ⌘W | Đóng cửa sổ (app vẫn chạy ngầm để nhận thông báo) |
-| ⌘Q | Thoát hẳn (macOS) |
+| ⌥⌘I | Developer tools |
+| ⌘+ / ⌘- / ⌘0 | Zoom in / out / reset |
+| ⌘W | Close the window (the app keeps running for notifications) |
+| ⌘Q | Quit (macOS) |
 
-**Đóng cửa sổ không thoát app**, để vẫn nhận thông báo:
-- **macOS**: bấm icon trên Dock để mở lại, ⌘Q để thoát hẳn.
-- **Windows**: app nằm ở khay hệ thống (góc phải taskbar, có thể nằm trong mũi tên ^). Bấm icon để mở lại, chuột phải → **Thoát** để thoát hẳn. Có tin mới thì nút trên taskbar nháy, rê chuột lên icon ở khay để xem số tin chưa đọc.
+On Windows, use Ctrl instead of ⌘. The menu bar is hidden; press **Alt** to show it.
 
-Menu **View → Xuất cấu trúc DOM (ẩn nội dung)** lưu file `teams-dom-outline.txt` ra Desktop. File này chỉ chứa tên thẻ, `data-tid`, `role` và `class`, không có nội dung tin nhắn, nên gửi cho người làm theme thoải mái.
+Closing the window does not quit the app, so notifications keep arriving:
 
-## Sửa theme
+- **macOS**: click the Dock icon to bring the window back; press ⌘Q to quit.
+- **Windows**: the app stays in the system tray (bottom-right of the taskbar, possibly under the ^ arrow). Click the icon to reopen it; right-click → **Thoát** to quit. The taskbar button flashes on new messages, and the tray tooltip shows the unread count.
 
-Chọn giao diện trong menu **View → Giao diện**: **Messenger – Love** (hồng/tím, nền trái tim, mặc định), **Messenger – Classic** (xanh) hoặc **Zalo**.
+The menu labels are in Vietnamese.
 
-- `src/theme/palettes/*.css`: bộ màu của từng giao diện.
-- `src/theme/messenger.css`: phần gắn màu vào giao diện Teams (bong bóng, danh sách chat, ô nhập tin...), dùng chung cho mọi giao diện.
-- `src/theme/zalo.css`: phần ghi đè riêng cho Zalo (thanh trái xanh, hàng chat phẳng, bong bóng bo 8px, ô nhập tin phẳng).
+## Editing themes
 
-Khi chạy bằng `npm start` hoặc `npm run dev`, lưu file CSS là app tự áp theme mới ngay, không cần reload Teams. Theme chỉ áp lên trang Teams, không áp lên trang đăng nhập. Bật/tắt bằng ⌘⇧M; lựa chọn bật/tắt và bộ màu được nhớ cho lần mở sau.
+- `src/theme/palettes/*.css`: the colours for each theme.
+- `src/theme/messenger.css`: maps those colours onto Teams (bubbles, chat list, composer, header). Shared by every theme.
+- `src/theme/zalo.css`: extra Zalo-only rules (blue rail, flat rows, 8px bubbles, flat composer).
 
-Muốn thêm giao diện: copy `palettes/love.css` thành file mới, đổi màu, rồi thêm một dòng vào `THEMES` trong `src/main.js` (liệt kê các file CSS theo thứ tự nạp).
+When you run from source, saving a CSS file applies it at once, without reloading Teams. Themes apply only to Teams pages, never to sign-in pages.
 
-`npm run dev` mở thêm cổng debug Chrome (chỉ trên `127.0.0.1:9333`) để công cụ bên ngoài đọc cấu trúc trang và chụp màn hình khi chỉnh theme. Dùng hằng ngày thì chạy `npm start`, không mở cổng này.
+To add a theme, copy `palettes/love.css` to a new file, change the colours, and add an entry to `THEMES` in `src/main.js` listing its CSS files in load order. See [src/theme/README.md](src/theme/README.md) for the variables and the Teams DOM hooks the themes rely on.
 
-Bản đã build (`.dmg` / `.exe`) đóng gói sẵn CSS bên trong. Sửa theme xong thì phải build lại.
+**View → Xuất cấu trúc DOM (ẩn nội dung)** saves `teams-dom-outline.txt` to your Desktop. It contains only tag names, `data-tid`, `role` and class names, with no message content, so it is safe to share when reporting a broken theme.
 
-## Lưu ý
+Installed builds (`.dmg` / `.exe`) bundle the CSS, so rebuild after editing a theme.
 
-- **Conditional Access**: một số công ty chỉ cho đăng nhập từ trình duyệt hoặc thiết bị được quản lý (Intune, Edge có SSO...). App này giả user agent là Edge, nhưng nếu policy kiểm tra thiết bị thì vẫn có thể bị chặn đăng nhập. Gặp trường hợp này thì app chịu, không lách được.
-- **Teams đổi giao diện**: Microsoft cập nhật DOM/class của Teams khá thường xuyên. Sau một bản cập nhật, theme có thể bị lệch hoặc hỏng một phần. Khi đó tắt theme (⌘⇧M), xuất lại cấu trúc DOM rồi sửa CSS.
-- Link ngoài (không phải Microsoft) sẽ mở bằng trình duyệt mặc định.
-- Bản Windows mới build và kiểm tra trên Mac, chưa chạy thử trên máy Windows thật.
+## Security
+
+- **Isolation**: Teams runs in a sandboxed renderer with context isolation and no Node.js access. The app has no preload script and gives the page no access to your files or system.
+- **Permissions**: notifications, camera, microphone, clipboard and screen capture are granted only to Microsoft HTTPS pages. Other sites the window reaches (for example a company sign-in page) get nothing.
+- **Screen sharing** always asks which screen or window to share (the macOS system picker, or the app's own dialog). Nothing is shared silently.
+- **Links** outside Microsoft open in your default browser, not inside the app.
+- **Your session** (cookies and tokens) is stored in your user profile: `~/Library/Application Support/Teams Messenger` on macOS, `%APPDATA%\Teams Messenger` on Windows. Anyone who can access your OS account can reuse it, as with any browser. Keep disk encryption (FileVault / BitLocker) on.
+- **No telemetry**: the app itself sends nothing anywhere. All network traffic is Teams talking to Microsoft.
+- **`npm run dev` is for theme development only.** It opens a Chrome DevTools port on `127.0.0.1:9333`, and any program on your computer can use that port to read and control your Teams session. Use `npm start` for everyday use. Installed builds never open this port.
+- **Installed builds** have Electron's `RunAsNode`, `NODE_OPTIONS` and `--inspect` entry points disabled and verify their own app archive at startup, so the app cannot be used to run other code.
+- **Downloads**: builds are unsigned. Only install builds from this repository's Releases page, not copies passed around in chat.
+- **Updates**: there is no auto-update. Pull and rebuild from time to time to get Electron (Chromium) security fixes.
+
+Found a security problem? Please open an issue on GitHub.
+
+## Limitations
+
+- **Conditional Access**: some organisations only allow sign-in from managed browsers or devices (Intune, Edge with SSO). The app identifies itself as Edge, but sign-in can still be blocked if your organisation checks the device. The app cannot work around that.
+- **Teams updates**: Microsoft changes the Teams DOM often, so parts of a theme can break after an update. Turn the theme off (⌘⇧M), export the DOM outline and adjust the CSS.
+- The Windows build has been built and checked on a Mac, but not yet run on a real Windows machine.
 
 ## License
 
-[MIT](LICENSE) © 2026 Võ Thanh Danh (DannyEggy). Dự án không liên kết với Microsoft, Meta hay Zalo; các tên này thuộc về chủ sở hữu tương ứng.
+[MIT](LICENSE) © 2026 Võ Thanh Danh (DannyEggy).
+
+This project is not affiliated with Microsoft, Meta or Zalo. Their names and trademarks belong to their respective owners.

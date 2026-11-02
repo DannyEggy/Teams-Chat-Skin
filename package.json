@@ -63,6 +63,14 @@
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "shortcutName": "Teams Messenger"
+    },
+    "electronFuses": {
+      "runAsNode": false,
+      "enableNodeOptionsEnvironmentVariable": false,
+      "enableNodeCliInspectArguments": false,
+      "enableEmbeddedAsarIntegrityValidation": true,
+      "onlyLoadAppFromAsar": true,
+      "grantFileProtocolExtraPrivileges": false
     }
   },
   "devDependencies": {

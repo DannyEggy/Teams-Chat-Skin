@@ -1,34 +1,33 @@
-# Theme Messenger
+# Themes
 
-Thứ tự nạp (khai báo trong `THEMES` ở `src/main.js`): `palettes/<tên>.css` (biến màu `--msgr-*`), `messenger.css` (gắn biến vào Teams), rồi file ghi đè riêng nếu có (`zalo.css`).
+Load order (declared in `THEMES` in `src/main.js`): `palettes/<name>.css` (the `--msgr-*` colour variables), then `messenger.css` (maps the variables onto Teams), then any theme-specific overrides (`zalo.css`).
 
-## Biến màu trong palette
+## Palette variables
 
-| Biến | Dùng cho |
+| Variable | Used for |
 |---|---|
-| `--msgr-accent` (+ `-hover`, `-pressed`) | Icon, nút, tab đang chọn |
-| `--msgr-accent-tint`, `-tint-2` | Hàng chat đang mở, nền nhạt màu chủ đạo |
-| `--msgr-mine-bg` / `--msgr-mine-fg` | Bong bóng của mình (gradient cố định theo cửa sổ) |
-| `--msgr-theirs-bg` / `--msgr-theirs-fg` | Bong bóng người khác |
-| `--msgr-surface`, `-2`, `-3` | Nền app, hover, pressed |
-| `--msgr-chat-bg`, `--msgr-chat-bg-image` (+ size/position/repeat) | Nền khung chat |
-| `--msgr-composer-bg` | Ô nhập tin |
-| `--msgr-fg`, `-2`, `-3` | Chữ chính, phụ, mờ |
-| `--msgr-divider`, `--msgr-red` | Đường kẻ, badge thông báo |
-| `--msgr-radius` | Bo góc bong bóng (Messenger 18px, Zalo 8px) |
-| `--zalo-*` | Chỉ Zalo: màu thanh trái, bóng bong bóng, viền bong bóng của mình |
+| `--msgr-accent` (+ `-hover`, `-pressed`) | Icons, buttons, selected tab |
+| `--msgr-accent-tint`, `-tint-2` | Open chat row, light accent surfaces |
+| `--msgr-mine-bg` / `--msgr-mine-fg` | Your bubbles (Messenger: gradient fixed to the window) |
+| `--msgr-theirs-bg` / `--msgr-theirs-fg` | Other people's bubbles |
+| `--msgr-surface`, `-2`, `-3` | App background, hover, pressed |
+| `--msgr-chat-bg`, `--msgr-chat-bg-image` (+ size/position/repeat) | Chat pane background |
+| `--msgr-composer-bg` | Message box |
+| `--msgr-fg`, `-2`, `-3` | Primary, secondary and muted text |
+| `--msgr-divider`, `--msgr-red` | Dividers, notification badges |
+| `--msgr-radius` | Bubble corner radius (Messenger 18px, Zalo 8px) |
+| `--zalo-*` | Zalo only: rail colour, bubble shadow, border on your bubbles |
 
-Chữ trắng trên `--msgr-accent` / `--msgr-mine-bg` nên đạt tương phản ≥ 4.5:1.
+White text on `--msgr-accent` and on `--msgr-mine-bg` should reach a 4.5:1 contrast ratio.
 
-## Hook trong DOM Teams (đã kiểm tra trên Teams 2.x, 11/2026)
+## Teams DOM hooks (checked against Teams 2.x, November 2026)
 
-- Màu toàn app: ghi đè token Fluent (`--colorNeutral*`, `--colorBrand*`, `--theme*`) trên `.fui-FluentProvider`. Ép giao diện sáng kể cả khi Teams để dark mode.
-- Bong bóng: `.fui-ChatMyMessage__body`, `.fui-ChatMessage__body`; reply: `[data-tid=quoted-reply-card]`; reaction: `[data-tid=diverse-reaction-pill-button]`, `[data-tid=add-reaction-picker-entry-point-button]`.
-- Danh sách chat: `[data-tid=app-layout-area--mid-nav] .fui-TreeItem[data-item-type=chat]`; đang mở: `[data-tabster*="LeftRailSelectedItem"]`.
+- App-wide colours: Fluent UI tokens (`--colorNeutral*`, `--colorBrand*`, `--theme*`) overridden on `.fui-FluentProvider`. This forces a light look even when Teams is in dark mode.
+- Bubbles: `.fui-ChatMyMessage__body`, `.fui-ChatMessage__body`. Replies: `[data-tid=quoted-reply-card]`. Reactions: `[data-tid=diverse-reaction-pill-button]`, `[data-tid=add-reaction-picker-entry-point-button]`.
+- Chat list: `[data-tid=app-layout-area--mid-nav] .fui-TreeItem[data-item-type=chat]`. Open chat: `[data-tabster*="LeftRailSelectedItem"]`.
 - Header: `[data-tid=entity-header]`, `[data-tid=chat-title]`, `[data-tid=entity-header-toolbar]`.
-- Khung chat: `[data-tid=message-pane-layout]`.
-- Ô nhập tin: `[data-tid=ckeditor]`, nút `[data-tid^=sendMessageCommands-]`, khung bọc là `div` chứa cả `simplified-formatting-toolbar` và `ckeditor`.
+- Chat pane: `[data-tid=message-pane-layout]`.
+- Composer: `[data-tid=ckeditor]`, buttons `[data-tid^=sendMessageCommands-]`. The surrounding card is the `div` that contains both `simplified-formatting-toolbar` and `ckeditor`.
+- Left rail (Zalo): tokens are re-declared on `[data-tid=app-layout-area--nav]` so icons, hover and the selection indicator all turn white.
 
-Thanh icon bên trái (Zalo): ghi đè lại token ngay trên `[data-tid=app-layout-area--nav]` để icon, hover, vạch chọn đều thành trắng.
-
-Không dùng class băm của Griffel (kiểu `.f1abc23`) vì đổi theo mỗi bản build.
+Never use Griffel's hashed class names (like `.f1abc23`); they change with every Teams build.

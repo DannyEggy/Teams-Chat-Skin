@@ -12,6 +12,7 @@ const {
   desktopCapturer,
   Tray,
   nativeImage,
+  webContents,
 } = require('electron');
 const fs = require('fs');
 const path = require('path');
@@ -138,7 +139,7 @@ function parseUrl(url) {
 
 function isMicrosoftUrl(url) {
   const u = parseUrl(url);
-  if (!u || (u.protocol !== 'https:' && u.protocol !== 'http:')) return false;
+  if (!u || u.protocol !== 'https:') return false;
   return MS_EXACT_HOSTS.has(u.hostname) || hostMatches(u.hostname, MS_HOST_SUFFIXES);
 }
 
@@ -273,11 +274,31 @@ async function requestMacMediaAccess(mediaTypes = []) {
   return true;
 }
 
+// Screen-share picker shown before Teams gets any capture stream.
+async function pickDisplaySource(wc) {
+  const sources = (await desktopCapturer.getSources({ types: ['screen', 'window'] })).slice(0, 8);
+  if (!sources.length) return null;
+  const parent = BrowserWindow.fromWebContents(wc) || mainWindow;
+  const { response } = await dialog.showMessageBox(parent, {
+    type: 'question',
+    message: 'Chia sẻ màn hình',
+    detail: 'Chọn màn hình hoặc cửa sổ muốn chia sẻ trong Teams.',
+    buttons: [...sources.map((src) => src.name), 'Hủy'],
+    cancelId: sources.length,
+    defaultId: sources.length,
+  });
+  return sources[response] || null;
+}
+
 function setupSession(ses) {
   ses.setUserAgent(USER_AGENT);
 
-  ses.setPermissionRequestHandler((_wc, permission, callback, details) => {
+  // Only Microsoft pages get permissions; the session may also show company
+  // login pages or other sites reached through redirects.
+  ses.setPermissionCheckHandler((_wc, _permission, requestingOrigin) => isMicrosoftUrl(requestingOrigin));
+  ses.setPermissionRequestHandler((wc, permission, callback, details) => {
     if (!ALLOWED_PERMISSIONS.has(permission)) return callback(false);
+    if (!isMicrosoftUrl(details.requestingUrl || wc.getURL())) return callback(false);
     if (permission === 'media') {
       requestMacMediaAccess(details.mediaTypes).then(callback, () => callback(false));
       return;
@@ -286,12 +307,13 @@ function setupSession(ses) {
   });
 
   // getDisplayMedia (Teams screen sharing). macOS 15+ shows the native picker;
-  // otherwise fall back to sharing the primary screen.
+  // elsewhere the user picks a screen/window in our dialog. Never share silently.
   ses.setDisplayMediaRequestHandler(
-    (_request, callback) => {
-      desktopCapturer
-        .getSources({ types: ['screen'] })
-        .then((sources) => callback(sources[0] ? { video: sources[0] } : {}))
+    (request, callback) => {
+      if (!isTeamsPage(request.securityOrigin || request.frame?.url || '')) return callback({});
+      const wc = request.frame ? webContents.fromFrame(request.frame) : null;
+      pickDisplaySource(wc || mainWindow?.webContents)
+        .then((source) => callback(source ? { video: source } : {}))
         .catch(() => callback({}));
     },
     { useSystemPicker: true },
@@ -485,17 +507,20 @@ function createWindow() {
   wc.on('did-finish-load', ensureTheme);
   wc.on('did-navigate-in-page', ensureTheme);
 
-  // Links that try to take over the main window go to the default browser,
-  // except while on a login page (company SSO may redirect to its own IdP).
-  wc.on('will-navigate', (event, url) => {
+  // Links and redirects that try to take over the main window go to the
+  // default browser, except while on a login page (company SSO may redirect
+  // to its own IdP).
+  const guardNavigation = (event, url) => {
     if (isMicrosoftUrl(url)) return;
     const current = parseUrl(wc.getURL());
     const onAuthPage = !current || !isMicrosoftUrl(wc.getURL()) ||
       hostMatches(current.hostname, AUTH_HOST_SUFFIXES);
-    if (onAuthPage) return;
+    if (onAuthPage && parseUrl(url)?.protocol === 'https:') return;
     event.preventDefault();
     openExternally(url);
-  });
+  };
+  wc.on('will-navigate', guardNavigation);
+  wc.on('will-redirect', guardNavigation);
 
   // Unread count from titles like "(3) Chat | Microsoft Teams":
   // Dock badge on macOS, tray tooltip + taskbar flash on Windows.
