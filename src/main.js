@@ -21,7 +21,11 @@ const IS_MAC = process.platform === 'darwin';
 const IS_WIN = process.platform === 'win32';
 const APP_ID = 'com.dannyeggy.teamsmessenger';
 const ICON_PATH = path.join(__dirname, 'assets', 'icon.png');
-const TEAMS_URL = 'https://teams.microsoft.com/v2/';
+// Work/school accounts and personal Microsoft accounts use different Teams sites.
+const ACCOUNTS = [
+  { id: 'work', label: 'Công ty / trường học', url: 'https://teams.microsoft.com/v2/' },
+  { id: 'personal', label: 'Cá nhân (Outlook, Hotmail, Live)', url: 'https://teams.live.com/v2/' },
+];
 const PARTITION = 'persist:teams';
 const THEME_DIR = path.join(__dirname, 'theme');
 // Each look is a stack of CSS files from src/theme, injected in order:
@@ -61,7 +65,11 @@ let unreadCount = 0;
 // Settings (window bounds + theme toggle), stored as plain JSON in userData
 // ---------------------------------------------------------------------------
 
-const DEFAULT_SETTINGS = { themeEnabled: true, palette: 'love', bounds: null, isMaximized: false };
+const DEFAULT_SETTINGS = { themeEnabled: true, palette: 'love', account: 'work', bounds: null, isMaximized: false };
+
+function teamsUrl() {
+  return (ACCOUNTS.find((a) => a.id === settings.account) || ACCOUNTS[0]).url;
+}
 
 function currentTheme() {
   return THEMES.find((t) => t.id === settings.palette) || THEMES[0];
@@ -232,6 +240,12 @@ function setThemeEnabled(enabled) {
   settings.themeEnabled = enabled;
   saveSettings();
   reloadTheme();
+}
+
+function setAccount(id) {
+  settings.account = id;
+  saveSettings();
+  mainWindow?.loadURL(teamsUrl());
 }
 
 function setPalette(id) {
@@ -439,6 +453,15 @@ function buildMenu() {
           click: (item) => setThemeEnabled(item.checked),
         },
         {
+          label: 'Loại tài khoản',
+          submenu: ACCOUNTS.map((a) => ({
+            label: a.label,
+            type: 'radio',
+            checked: settings.account === a.id,
+            click: () => setAccount(a.id),
+          })),
+        },
+        {
           label: 'Giao diện',
           submenu: THEMES.map((p) => ({
             label: p.label,
@@ -561,7 +584,7 @@ function createWindow() {
   });
   mainWindow.on('closed', () => { mainWindow = null; });
 
-  mainWindow.loadURL(TEAMS_URL);
+  mainWindow.loadURL(teamsUrl());
 }
 
 // Windows: tray icon so the app keeps running after the window is closed.

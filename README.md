@@ -1,6 +1,6 @@
 # Teams Chat Skin
 
-An unofficial desktop app (Electron) for Microsoft Teams that wraps Teams on the web and restyles it to look like Messenger or Zalo. No admin rights needed: sign in with your work or school account as usual.
+An unofficial desktop app (Electron) for Microsoft Teams that wraps Teams on the web and restyles it to look like Messenger or Zalo. No admin rights needed: sign in with your work, school or personal Microsoft account as usual.
 
 Themes:
 
@@ -44,6 +44,8 @@ The builds are not code-signed, so the first launch shows a warning:
 ## Using the app
 
 Pick a theme in **View → Giao diện**. Your choice is remembered.
+
+**Personal Microsoft accounts** (Outlook, Hotmail, Live) use a different Teams site from work and school accounts. Choose **View → Loại tài khoản → Cá nhân** before signing in; the app then opens `teams.live.com` instead of `teams.microsoft.com`. Switch back with **Công ty / trường học**.
 
 | Shortcut | Action |
 |---|---|
