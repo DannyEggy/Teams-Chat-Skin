@@ -1,0 +1,594 @@
+/* ==========================================================================
+   Messenger theme for the new Microsoft Teams web client (teams.cloud.microsoft)
+   Injected via Electron webContents.insertCSS, hot-reloaded on save.
+
+   Colours live in palettes/<name>.css (injected before this file). This file
+   only maps them onto Teams:
+     1. Fluent UI v9 tokens on .fui-FluentProvider: recolours the whole app and
+        forces a light surface set even when Teams itself is in dark mode.
+     2. Stable hooks found in the live DOM: [data-tid=...], .fui-* component
+        classes, [data-tabster*=LeftRailSelectedItem]. No hashed Griffel classes.
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   0. DEFAULTS (zero specificity, so any palette wins)
+   -------------------------------------------------------------------------- */
+:where(html) {
+  --msgr-accent: #DB2777;
+  --msgr-accent-hover: #C81F6B;
+  --msgr-accent-pressed: #AE1A5D;
+  --msgr-accent-tint: #F7D9EE;
+  --msgr-accent-tint-2: #FBE8F5;
+  --msgr-mine-bg: #DB2777;
+  --msgr-mine-fg: #FFFFFF;
+  --msgr-theirs-bg: #FBF2F7;
+  --msgr-theirs-fg: #22122B;
+  --msgr-surface: #FFFFFF;
+  --msgr-surface-2: #F3E8FB;
+  --msgr-surface-3: #EAD9F6;
+  --msgr-chat-bg: #E2B6FA;
+  --msgr-composer-bg: #EDCDFC;
+  --msgr-fg: #1E1328;
+  --msgr-fg-2: #5E4B6B;
+  --msgr-fg-3: #7B6787;
+  --msgr-divider: rgba(94, 47, 120, 0.12);
+  --msgr-red: #E41E3F;
+  --msgr-chat-bg-image: none;
+  --msgr-chat-bg-size: auto;
+  --msgr-chat-bg-position: 0 0;
+  --msgr-chat-bg-repeat: no-repeat;
+
+  --msgr-radius: 18px;
+  --msgr-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", "Segoe UI", sans-serif;
+}
+
+
+/* --------------------------------------------------------------------------
+   1. FLUENT TOKENS
+   [class*=fui-FluentProvider] also catches portals (menus, tooltips, dialogs).
+   -------------------------------------------------------------------------- */
+.fui-FluentProvider,
+[class*="fui-FluentProvider"] {
+  --fontFamilyBase: var(--msgr-font) !important;
+  --borderRadiusMedium: 8px !important;
+  --borderRadiusLarge: 12px !important;
+  --borderRadiusXLarge: 16px !important;
+
+  /* Brand */
+  --colorBrandBackground: var(--msgr-accent) !important;
+  --colorBrandBackgroundHover: var(--msgr-accent-hover) !important;
+  --colorBrandBackgroundPressed: var(--msgr-accent-pressed) !important;
+  --colorBrandBackgroundSelected: var(--msgr-accent-hover) !important;
+  --colorBrandBackgroundStatic: var(--msgr-accent) !important;
+  --colorBrandBackground3Static: var(--msgr-accent-hover) !important;
+  --colorBrandBackground4Static: var(--msgr-accent-pressed) !important;
+  --colorBrandBackground2: var(--msgr-accent-tint-2) !important;
+  --colorBrandBackground2Hover: var(--msgr-accent-tint) !important;
+  --colorBrandBackground2Pressed: var(--msgr-accent-tint) !important;
+  --colorBrandBackgroundInverted: #FFFFFF !important;
+  --colorBrandBackgroundInvertedHover: var(--msgr-accent-tint-2) !important;
+  --colorBrandBackgroundInvertedPressed: var(--msgr-accent-tint) !important;
+  --colorBrandBackgroundInvertedSelected: var(--msgr-accent-tint-2) !important;
+  --colorBrandForeground1: var(--msgr-accent) !important;
+  --colorBrandForeground2: var(--msgr-accent-hover) !important;
+  --colorBrandForeground2Hover: var(--msgr-accent-pressed) !important;
+  --colorBrandForeground2Pressed: var(--msgr-accent-pressed) !important;
+  --colorBrandForegroundInverted: var(--msgr-accent) !important;
+  --colorBrandForegroundInvertedHover: var(--msgr-accent-hover) !important;
+  --colorBrandForegroundInvertedPressed: var(--msgr-accent-pressed) !important;
+  --colorBrandForegroundLink: var(--msgr-accent) !important;
+  --colorBrandForegroundLinkHover: var(--msgr-accent-hover) !important;
+  --colorBrandForegroundLinkPressed: var(--msgr-accent-pressed) !important;
+  --colorBrandForegroundLinkSelected: var(--msgr-accent) !important;
+  --colorBrandForegroundOnLight: var(--msgr-accent) !important;
+  --colorBrandForegroundOnLightHover: var(--msgr-accent-hover) !important;
+  --colorBrandForegroundOnLightPressed: var(--msgr-accent-pressed) !important;
+  --colorBrandForegroundOnLightSelected: var(--msgr-accent-hover) !important;
+  --colorBrandStroke1: var(--msgr-accent) !important;
+  --colorBrandStroke2: var(--msgr-accent-tint) !important;
+  --colorBrandStroke2Hover: var(--msgr-accent-tint) !important;
+  --colorBrandStroke2Pressed: var(--msgr-accent) !important;
+  --colorBrandStroke2Contrast: var(--msgr-accent-tint) !important;
+  --colorCompoundBrandBackground: var(--msgr-accent) !important;
+  --colorCompoundBrandBackgroundHover: var(--msgr-accent-hover) !important;
+  --colorCompoundBrandBackgroundPressed: var(--msgr-accent-pressed) !important;
+  --colorCompoundBrandForeground1: var(--msgr-accent) !important;
+  --colorCompoundBrandForeground1Hover: var(--msgr-accent-hover) !important;
+  --colorCompoundBrandForeground1Pressed: var(--msgr-accent-pressed) !important;
+  --colorCompoundBrandStroke: var(--msgr-accent) !important;
+  --colorCompoundBrandStrokeHover: var(--msgr-accent-hover) !important;
+  --colorCompoundBrandStrokePressed: var(--msgr-accent-pressed) !important;
+  --colorNeutralForeground2BrandHover: var(--msgr-accent) !important;
+  --colorNeutralForeground2BrandPressed: var(--msgr-accent-pressed) !important;
+  --colorNeutralForeground2BrandSelected: var(--msgr-accent) !important;
+  --colorNeutralForeground3BrandHover: var(--msgr-accent) !important;
+  --colorNeutralForeground3BrandPressed: var(--msgr-accent-pressed) !important;
+  --colorNeutralForeground3BrandSelected: var(--msgr-accent) !important;
+  --colorNeutralStrokeAccessibleSelected: var(--msgr-accent) !important;
+  --colorTeamsBrand1Hover: var(--msgr-accent-hover) !important;
+  --colorTeamsBrand1Pressed: var(--msgr-accent-pressed) !important;
+  --colorTeamsBrand1Selected: var(--msgr-accent) !important;
+  --colorStrokeFocus1: #FFFFFF !important;
+  --colorStrokeFocus2: var(--msgr-accent) !important;
+
+  /* Neutral surfaces: always light, tinted by the palette */
+  --colorNeutralBackground1: var(--msgr-surface) !important;
+  --colorNeutralBackground1Hover: var(--msgr-surface-2) !important;
+  --colorNeutralBackground1Pressed: var(--msgr-surface-3) !important;
+  --colorNeutralBackground1Selected: var(--msgr-surface-2) !important;
+  --colorNeutralBackground2: var(--msgr-surface) !important;
+  --colorNeutralBackground2Hover: var(--msgr-surface-2) !important;
+  --colorNeutralBackground2Pressed: var(--msgr-surface-3) !important;
+  --colorNeutralBackground2Selected: var(--msgr-surface-2) !important;
+  --colorNeutralBackground3: var(--msgr-surface) !important;
+  --colorNeutralBackground3Hover: var(--msgr-surface-2) !important;
+  --colorNeutralBackground3Pressed: var(--msgr-surface-3) !important;
+  --colorNeutralBackground3Selected: var(--msgr-surface-2) !important;
+  --colorNeutralBackground4: var(--msgr-surface) !important;
+  --colorNeutralBackground4Hover: var(--msgr-surface-2) !important;
+  --colorNeutralBackground4Pressed: var(--msgr-surface-3) !important;
+  --colorNeutralBackground4Selected: var(--msgr-surface-2) !important;
+  --colorNeutralBackground5: var(--msgr-surface-2) !important;
+  --colorNeutralBackground5Hover: var(--msgr-surface-3) !important;
+  --colorNeutralBackground5Pressed: var(--msgr-surface-3) !important;
+  --colorNeutralBackground5Selected: var(--msgr-surface-3) !important;
+  --colorNeutralBackground6: var(--msgr-surface-2) !important;
+  --colorNeutralBackground7Hover: var(--msgr-surface-2) !important;
+  --colorNeutralBackground7Pressed: var(--msgr-surface-3) !important;
+  --colorNeutralBackground8: var(--msgr-surface) !important;
+  --colorNeutralBackgroundAlpha: rgba(255, 255, 255, 0.5) !important;
+  --colorNeutralBackgroundAlpha2: rgba(255, 255, 255, 0.7) !important;
+  --colorNeutralBackgroundDisabled: var(--msgr-surface-2) !important;
+  --colorNeutralBackgroundDisabled2: var(--msgr-surface) !important;
+  --colorNeutralBackgroundInverted: #2B2233 !important;
+  --colorNeutralBackgroundInvertedHover: #3A2F44 !important;
+  --colorNeutralBackgroundInvertedPressed: #1E1726 !important;
+  --colorNeutralBackgroundInvertedSelected: #3A2F44 !important;
+  --colorNeutralBackgroundStatic: var(--msgr-surface-3) !important;
+  --colorSubtleBackgroundHover: var(--msgr-surface-2) !important;
+  --colorSubtleBackgroundPressed: var(--msgr-surface-3) !important;
+  --colorSubtleBackgroundSelected: var(--msgr-surface-2) !important;
+  --colorSubtleBackgroundLightAlphaHover: rgba(255, 255, 255, 0.7) !important;
+  --colorSubtleBackgroundLightAlphaPressed: rgba(255, 255, 255, 0.5) !important;
+  --colorDefaultBackground7: var(--msgr-surface) !important;
+  --colorScrollbarOverlay: rgba(0, 0, 0, 0.3) !important;
+
+  /* Neutral text */
+  --colorNeutralForeground1: var(--msgr-fg) !important;
+  --colorNeutralForeground1Hover: var(--msgr-fg) !important;
+  --colorNeutralForeground1Pressed: var(--msgr-fg) !important;
+  --colorNeutralForeground1Selected: var(--msgr-fg) !important;
+  --colorNeutralForeground2: var(--msgr-fg-2) !important;
+  --colorNeutralForeground2Hover: var(--msgr-fg) !important;
+  --colorNeutralForeground2Pressed: var(--msgr-fg) !important;
+  --colorNeutralForeground2Selected: var(--msgr-fg) !important;
+  --colorNeutralForeground2Link: var(--msgr-fg-2) !important;
+  --colorNeutralForeground2LinkHover: var(--msgr-fg) !important;
+  --colorNeutralForeground2LinkPressed: var(--msgr-fg) !important;
+  --colorNeutralForeground2LinkSelected: var(--msgr-fg) !important;
+  --colorNeutralForeground3: var(--msgr-fg-3) !important;
+  --colorNeutralForeground3Hover: var(--msgr-fg-2) !important;
+  --colorNeutralForeground3Pressed: var(--msgr-fg-2) !important;
+  --colorNeutralForeground3Selected: var(--msgr-fg-2) !important;
+  --colorNeutralForeground4: var(--msgr-fg-3) !important;
+  --colorNeutralForeground5: var(--msgr-fg-3) !important;
+  --colorNeutralForeground5Hover: var(--msgr-fg) !important;
+  --colorNeutralForeground5Pressed: var(--msgr-fg) !important;
+  --colorNeutralForeground5Selected: var(--msgr-fg) !important;
+  --colorNeutralForegroundDisabled: #B5A9BD !important;
+  --colorNeutralForegroundInverted: #FFFFFF !important;
+  --colorNeutralForegroundInverted2: #FFFFFF !important;
+  --colorNeutralForegroundInvertedHover: #FFFFFF !important;
+  --colorNeutralForegroundInvertedPressed: #FFFFFF !important;
+  --colorNeutralForegroundInvertedSelected: #FFFFFF !important;
+  --colorNeutralForegroundInvertedLink: #FFFFFF !important;
+  --colorNeutralForegroundInvertedDisabled: rgba(255, 255, 255, 0.4) !important;
+  --colorNeutralForegroundStaticInverted: #FFFFFF !important;
+
+  /* Strokes */
+  --colorNeutralStroke1: rgba(60, 30, 80, 0.18) !important;
+  --colorNeutralStroke1Hover: rgba(60, 30, 80, 0.26) !important;
+  --colorNeutralStroke1Pressed: rgba(60, 30, 80, 0.3) !important;
+  --colorNeutralStroke1Selected: rgba(60, 30, 80, 0.26) !important;
+  --colorNeutralStroke2: var(--msgr-divider) !important;
+  --colorNeutralStroke3: var(--msgr-divider) !important;
+  --colorNeutralStroke4: var(--msgr-divider) !important;
+  --colorNeutralStroke4Hover: var(--msgr-divider) !important;
+  --colorNeutralStroke4Pressed: var(--msgr-divider) !important;
+  --colorNeutralStroke4Selected: var(--msgr-divider) !important;
+  --colorNeutralStrokeSubtle: var(--msgr-divider) !important;
+  --colorNeutralStrokeAlpha: rgba(0, 0, 0, 0.06) !important;
+  --colorNeutralStrokeAlpha2: rgba(255, 255, 255, 0.2) !important;
+  --colorNeutralStrokeAccessible: var(--msgr-fg-3) !important;
+  --colorNeutralStrokeAccessibleHover: var(--msgr-fg-2) !important;
+  --colorNeutralStrokeAccessiblePressed: var(--msgr-fg-2) !important;
+  --colorNeutralStrokeDisabled: rgba(60, 30, 80, 0.12) !important;
+  --colorNeutralStrokeDisabled2: rgba(60, 30, 80, 0.08) !important;
+  --colorNeutralStrokeOnBrand: #FFFFFF !important;
+
+  /* Teams shell variables (title bar, loading screen) */
+  --themeBackgroundColor: var(--msgr-surface) !important;
+  --themeColor: var(--msgr-fg) !important;
+  --themeLoadingScreenColor: var(--msgr-surface) !important;
+  --themeTitleBarBackgroundColor: var(--msgr-surface) !important;
+  --themeTitleBarColor: var(--msgr-fg-2) !important;
+  --themeTitleBarButtonHoverColor: var(--msgr-fg) !important;
+  --themeTitleBarButtonHoverBackgroundColor: var(--msgr-surface-2) !important;
+}
+
+body {
+  background-color: var(--msgr-surface) !important;
+  color-scheme: light;
+}
+
+.fui-Avatar,
+.fui-Avatar__image,
+.fui-Avatar__initials,
+.fui-Avatar__icon {
+  border-radius: 50% !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   2. TITLE BAR + LEFT RAIL
+   -------------------------------------------------------------------------- */
+[data-tid="title-bar"] {
+  background: var(--msgr-surface) !important;
+  border-bottom-color: var(--msgr-divider) !important;
+}
+[data-tid="search-f6-navigation-region"] form,
+[data-tid="search-f6-navigation-region"] form > div,
+[data-tid="titlebar-main-slot-main-window"] form {
+  border-radius: 999px !important;
+}
+[data-tid="search-f6-navigation-region"] form {
+  background: var(--msgr-surface-2) !important;
+  outline: none !important;
+}
+
+[data-tid="app-layout-area--nav"],
+[data-tid="app-layout-area--mid-nav"] {
+  background: var(--msgr-surface) !important;
+}
+[data-tid="app-layout-area--nav"] .fui-Button {
+  border-radius: 12px !important;
+}
+
+/* System banners (e.g. "Teams moved to a new URL") */
+[data-tid="app-layout-area--notifications"] .fui-MessageBar {
+  background: var(--msgr-accent-tint-2) !important;
+  border-color: transparent !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   3. CHAT LIST (left column)
+   -------------------------------------------------------------------------- */
+[data-tid="app-layout-area--mid-nav"] .fui-TreeItemLayout {
+  border-radius: 10px !important;
+}
+
+/* Conversation rows: taller, bigger round avatars, like Messenger.
+   Teams fixes row and folder heights (32px per row), so let them grow. */
+[data-tid="app-layout-area--mid-nav"] .fui-TreeItem {
+  height: auto !important;
+}
+[data-tid="app-layout-area--mid-nav"] .fui-TreeItem[data-item-type="chat"] > .fui-TreeItemLayout {
+  min-height: 48px !important;
+}
+[data-tid="app-layout-area--mid-nav"] .fui-TreeItem[data-item-type="chat"] .fui-TreeItemLayout__iconBefore .fui-Avatar {
+  width: 36px !important;
+  height: 36px !important;
+}
+[data-tid="app-layout-area--mid-nav"] .fui-TreeItem[data-item-type="chat"] .fui-TreeItemLayout__iconBefore .fui-Avatar__image {
+  width: 100% !important;
+  height: 100% !important;
+}
+[data-tid="app-layout-area--mid-nav"] .fui-TreeItem[data-item-type="chat"] .fui-TreeItemLayout__main {
+  font-size: 15px !important;
+}
+
+/* Open conversation */
+[data-tid="app-layout-area--mid-nav"] [data-tabster*="LeftRailSelectedItem"] > .fui-TreeItemLayout {
+  background: var(--msgr-accent-tint) !important;
+  color: var(--msgr-fg) !important;
+}
+[data-tid="app-layout-area--mid-nav"] [data-tabster*="LeftRailSelectedItem"] > .fui-TreeItemLayout .fui-TreeItemLayout__main {
+  font-weight: 600 !important;
+}
+
+/* Filter chips ("Chưa đọc", "Kênh") */
+[data-tid="app-layout-area--mid-nav"] .fui-ToggleButton {
+  border-radius: 999px !important;
+  border-color: transparent !important;
+  background: var(--msgr-surface-2) !important;
+}
+[data-tid="app-layout-area--mid-nav"] .fui-ToggleButton[aria-pressed="true"] {
+  background: var(--msgr-accent-tint) !important;
+  color: var(--msgr-accent) !important;
+}
+
+.fui-CounterBadge:not(.fui-PresenceBadge),
+.fui-Badge:not(.fui-PresenceBadge) {
+  border-radius: 999px !important;
+  font-weight: 600 !important;
+}
+[data-tid="app-layout-area--nav"] .fui-CounterBadge,
+[data-tid="app-layout-area--nav"] .fui-Badge:not(.fui-PresenceBadge) {
+  background: var(--msgr-red) !important;
+  color: #FFFFFF !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   4. CONVERSATION HEADER
+   -------------------------------------------------------------------------- */
+[data-tid="app-layout-area--header"] [data-tid="slot-measurer"],
+[data-tid="entity-header"] {
+  background: var(--msgr-surface) !important;
+  border-bottom: 1px solid var(--msgr-divider) !important;
+  box-shadow: 0 1px 2px rgba(60, 20, 80, 0.06);
+}
+[data-tid="chat-title"] {
+  font-size: 17px !important;
+  font-weight: 700 !important;
+}
+[data-tid="chat-title-avatar"] .fui-Avatar {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+/* Tabs are Teams-only; keep them but quiet */
+[data-tid="entity-header"] .fui-TabList .fui-Tab {
+  border-radius: 999px !important;
+  color: var(--msgr-fg-3) !important;
+}
+[data-tid="entity-header"] .fui-TabList .fui-Tab[aria-selected="true"] {
+  color: var(--msgr-accent) !important;
+}
+
+/* Call / info icons in the accent colour */
+[data-tid="entity-header-toolbar"] .fui-Button,
+[data-tid="entity-header-toolbar"] .fui-MenuButton {
+  color: var(--msgr-accent) !important;
+  border-radius: 50% !important;
+}
+[data-tid="entity-header-toolbar"] .fui-Button:hover {
+  background: var(--msgr-accent-tint-2) !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   5. CHAT BACKGROUND
+   -------------------------------------------------------------------------- */
+[data-tid="app-layout-area--main"] > [data-tid="slot-measurer"] {
+  background: var(--msgr-chat-bg) !important;
+}
+[data-tid="message-pane-layout"] {
+  background-color: var(--msgr-chat-bg) !important;
+  background-image: var(--msgr-chat-bg-image) !important;
+  background-size: var(--msgr-chat-bg-size) !important;
+  background-position: var(--msgr-chat-bg-position) !important;
+  background-repeat: var(--msgr-chat-bg-repeat) !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   6. MESSAGE BUBBLES
+   -------------------------------------------------------------------------- */
+.fui-ChatMessage__body,
+.fui-ChatMyMessage__body {
+  border-radius: var(--msgr-radius) !important;
+  padding: 8px 12px !important;
+  border: none !important;
+  box-shadow: none !important;
+  font-size: 15px !important;
+  line-height: 1.35 !important;
+}
+
+/* Mine: gradient fixed to the window, so bubbles shift colour as they scroll */
+.fui-ChatMyMessage__body {
+  background: var(--msgr-mine-bg) !important;
+  background-attachment: fixed !important;
+  color: var(--msgr-mine-fg) !important;
+}
+.fui-ChatMessage__body {
+  background: var(--msgr-theirs-bg) !important;
+  color: var(--msgr-theirs-fg) !important;
+}
+
+.fui-ChatMyMessage__body a,
+.fui-ChatMyMessage__body .fui-Link {
+  color: var(--msgr-mine-fg) !important;
+  text-decoration: underline !important;
+}
+.fui-ChatMyMessage__body :is([itemtype*="Mention" i], [data-tid*="mention" i]) {
+  color: var(--msgr-mine-fg) !important;
+  font-weight: 700 !important;
+  background: transparent !important;
+}
+.fui-ChatMyMessage__body :is(code, pre) {
+  background: rgba(0, 0, 0, 0.2) !important;
+  color: var(--msgr-mine-fg) !important;
+  border-color: transparent !important;
+  border-radius: 8px !important;
+}
+.fui-ChatMessage__body :is(code, pre) {
+  background: rgba(0, 0, 0, 0.05) !important;
+  border-color: transparent !important;
+  border-radius: 8px !important;
+}
+
+/* Quoted reply: a faded bubble inside the bubble, not a dark card */
+:is(.fui-ChatMyMessage__body, .fui-ChatMessage__body) [role="group"]:has(> [data-tid="quoted-reply-card"]) {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 0 2px !important;
+}
+:is(.fui-ChatMyMessage__body, .fui-ChatMessage__body) [role="group"]:has(> [data-tid="quoted-reply-card"]) > div:first-child {
+  border-radius: 2px !important;
+}
+.fui-ChatMyMessage__body [role="group"]:has(> [data-tid="quoted-reply-card"]) > div:first-child {
+  background: rgba(255, 255, 255, 0.7) !important;
+}
+.fui-ChatMessage__body [role="group"]:has(> [data-tid="quoted-reply-card"]) > div:first-child {
+  background: var(--msgr-accent) !important;
+}
+[data-tid="quoted-reply-card"] {
+  border-radius: 12px !important;
+  padding: 4px 8px 6px !important;
+}
+.fui-ChatMyMessage__body [data-tid="quoted-reply-card"] {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+.fui-ChatMyMessage__body [data-tid="quoted-reply-card"] * {
+  color: var(--msgr-mine-fg) !important;
+  background: transparent !important;
+}
+.fui-ChatMessage__body [data-tid="quoted-reply-card"] {
+  background: rgba(0, 0, 0, 0.05) !important;
+}
+[data-tid="quoted-reply-card"] [data-tid="quoted-reply-preview-content"] {
+  opacity: 0.85;
+}
+[data-tid="quoted-reply-card"] .fui-StyledText:not([data-tid]) {
+  font-weight: 600 !important;
+}
+
+/* Images in bubbles (not emoji) */
+:is(.fui-ChatMessage__body, .fui-ChatMyMessage__body)
+  img:not([data-tid*="emoji" i]):not([itemtype*="Emoji" i]):not(.fui-Avatar__image) {
+  border-radius: 12px !important;
+}
+:is(.fui-ChatMessage__body, .fui-ChatMyMessage__body) .fui-Card {
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+
+/* Sender name and time: small and quiet */
+.fui-ChatMessage__author,
+.fui-ChatMessage__author [data-tid="message-author-name"] {
+  color: var(--msgr-fg-2) !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+}
+.fui-ChatMessage__timestamp,
+.fui-ChatMyMessage__timestamp,
+.fui-ChatMyMessage__details {
+  color: var(--msgr-fg-3) !important;
+  font-size: 12px !important;
+}
+.fui-ChatMyMessage__statusIcon {
+  color: var(--msgr-accent) !important;
+}
+
+/* Reactions: small white chips, add-reaction button only on hover */
+[data-tid="diverse-reaction-pill-button"] {
+  background: var(--msgr-surface) !important;
+  border: none !important;
+  box-shadow: 0 1px 3px rgba(40, 10, 60, 0.18) !important;
+  min-height: 22px !important;
+  height: 22px !important;
+  padding: 0 5px !important;
+}
+[data-tid="diverse-reaction-pill-button"][class*="checked"] {
+  background: var(--msgr-accent-tint) !important;
+}
+[data-tid="diverse-reaction-pill-button"] img {
+  width: 16px !important;
+  height: 16px !important;
+}
+[data-tid="add-reaction-picker-entry-point-button"] {
+  background: var(--msgr-surface) !important;
+  border: none !important;
+  box-shadow: 0 1px 3px rgba(40, 10, 60, 0.18) !important;
+  height: 22px !important;
+  min-height: 22px !important;
+  opacity: 0;
+  transition: opacity 120ms ease-out;
+}
+.fui-unstable-ChatItem:hover [data-tid="add-reaction-picker-entry-point-button"],
+[data-tid="add-reaction-picker-entry-point-button"]:focus-visible {
+  opacity: 1;
+}
+
+
+/* --------------------------------------------------------------------------
+   7. COMPOSER
+   -------------------------------------------------------------------------- */
+[data-tid="message-pane-footer"] {
+  background: transparent !important;
+}
+
+/* Teams wraps the editor + buttons in a bordered card (nesting varies): drop it */
+[data-tid="chat-pane-compose-message-footer"] div:has([data-tid="simplified-formatting-toolbar"]):has([data-tid="ckeditor"]) {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+[data-tid="chat-pane-compose-message-footer"] div:has([data-tid="ckeditor"])::after {
+  opacity: 0 !important;
+}
+
+/* Inline notices above the composer (old Northstar alert, dark by default) */
+[data-tid="chat-pane-compose-message-footer"] .ui-alert {
+  background: var(--msgr-surface) !important;
+  color: var(--msgr-fg-2) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 3px rgba(40, 10, 60, 0.12) !important;
+}
+[data-tid="chat-pane-compose-message-footer"] .ui-alert * {
+  color: inherit !important;
+}
+
+[data-tid="ckeditor"] {
+  background: var(--msgr-composer-bg) !important;
+  color: var(--msgr-fg) !important;
+  border-radius: 20px !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  font-size: 15px !important;
+}
+[data-tid="ckeditor"] p.ck-placeholder::before {
+  content: "Aa" !important;
+  color: var(--msgr-fg-3) !important;
+}
+
+[data-tid="chat-pane-compose-message-footer"] :is([data-tid^="sendMessageCommands-"], [data-tid^="newMessageCommands-"]),
+[data-tid="chat-pane-compose-message-footer"] :is([data-tid^="sendMessageCommands-"], [data-tid^="newMessageCommands-"]) .ui-icon {
+  color: var(--msgr-accent) !important;
+}
+[data-tid="chat-pane-compose-message-footer"] :is([data-tid^="sendMessageCommands-"], [data-tid^="newMessageCommands-"]) {
+  border-radius: 50% !important;
+}
+[data-tid="chat-pane-compose-message-footer"] :is([data-tid^="sendMessageCommands-"], [data-tid^="newMessageCommands-"]):hover {
+  background: rgba(255, 255, 255, 0.45) !important;
+}
+[data-tid="chat-pane-compose-message-footer"] .ui-toolbar__divider {
+  opacity: 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   8. POPUPS + SCROLLBARS
+   -------------------------------------------------------------------------- */
+.fui-Tooltip__content { border-radius: 10px !important; }
+.fui-MenuPopover, .fui-PopoverSurface { border-radius: 12px !important; }
+.fui-DialogSurface { border-radius: 16px !important; }
+
+::-webkit-scrollbar { width: 8px; height: 8px; background: transparent; }
+::-webkit-scrollbar-track, ::-webkit-scrollbar-corner { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background-color: rgba(60, 30, 80, 0.25);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background-color: rgba(60, 30, 80, 0.45); }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-tid="add-reaction-picker-entry-point-button"] { transition: none; }
+}

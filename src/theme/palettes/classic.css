@@ -1,0 +1,29 @@
+/* Classic: Messenger xanh, nền trắng. */
+:root {
+  --msgr-accent: #0866FF;
+  --msgr-accent-hover: #0757DB;
+  --msgr-accent-pressed: #0649B8;
+  --msgr-accent-tint: #E2EDFF;
+  --msgr-accent-tint-2: #EEF4FF;
+
+  --msgr-mine-bg: linear-gradient(180deg, #00A2FF 0%, #0866FF 100%);
+  --msgr-mine-fg: #FFFFFF;
+  --msgr-theirs-bg: #F0F0F0;
+  --msgr-theirs-fg: #050505;
+
+  --msgr-surface: #FFFFFF;
+  --msgr-surface-2: #F0F2F5;
+  --msgr-surface-3: #E4E6EB;
+  --msgr-chat-bg: #FFFFFF;
+  --msgr-composer-bg: #F0F2F5;
+  --msgr-fg: #050505;
+  --msgr-fg-2: #65676B;
+  --msgr-fg-3: #8A8D91;
+  --msgr-divider: rgba(0, 0, 0, 0.08);
+  --msgr-red: #E41E3F;
+
+  --msgr-chat-bg-image: none;
+  --msgr-chat-bg-size: auto;
+  --msgr-chat-bg-position: 0 0;
+  --msgr-chat-bg-repeat: no-repeat;
+}

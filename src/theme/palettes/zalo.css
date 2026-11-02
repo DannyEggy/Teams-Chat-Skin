@@ -1,0 +1,36 @@
+/* Zalo: xanh Zalo, nền chat xám xanh, bong bóng của mình xanh nhạt chữ tối. */
+:root {
+  --msgr-accent: #0068FF;            /* chữ trắng trên nền này ~4.9:1 */
+  --msgr-accent-hover: #005AE0;
+  --msgr-accent-pressed: #004BBD;
+  --msgr-accent-tint: #E5EFFF;       /* hàng chat đang chọn */
+  --msgr-accent-tint-2: #F0F6FF;
+
+  --msgr-mine-bg: #DBEBFF;
+  --msgr-mine-fg: #081C36;
+  --msgr-theirs-bg: #FFFFFF;
+  --msgr-theirs-fg: #081C36;
+
+  --msgr-surface: #FFFFFF;
+  --msgr-surface-2: #F3F5F6;
+  --msgr-surface-3: #E5E7EB;
+  --msgr-chat-bg: #E4E9F0;
+  --msgr-composer-bg: transparent;
+  --msgr-fg: #081C36;
+  --msgr-fg-2: #4C5D74;
+  --msgr-fg-3: #7589A3;
+  --msgr-divider: #E1E4EA;
+  --msgr-red: #FA383E;
+
+  --msgr-chat-bg-image: none;
+  --msgr-chat-bg-size: auto;
+  --msgr-chat-bg-position: 0 0;
+  --msgr-chat-bg-repeat: no-repeat;
+
+  --msgr-radius: 8px;
+
+  --zalo-rail: #0068FF;
+  --zalo-rail-active: rgba(0, 0, 0, 0.18);
+  --zalo-bubble-shadow: 0 1px 1px rgba(8, 28, 54, 0.08);
+  --zalo-mine-border: #C7DEFF;
+}

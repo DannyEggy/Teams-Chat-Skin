@@ -1,0 +1,201 @@
+/* ==========================================================================
+   Zalo overrides, loaded after messenger.css (same hooks, different shapes).
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   1. LEFT RAIL: solid Zalo blue, white icons.
+   Tokens are re-scoped to the rail so Teams' own icon, hover and
+   selected-indicator colours all follow without touching hashed classes.
+   -------------------------------------------------------------------------- */
+[data-tid="app-layout-area--nav"] {
+  background: var(--zalo-rail) !important;
+  --colorNeutralForeground1: #FFFFFF !important;
+  --colorNeutralForeground2: rgba(255, 255, 255, 0.85) !important;
+  --colorNeutralForeground3: rgba(255, 255, 255, 0.8) !important;
+  --colorNeutralForeground2Hover: #FFFFFF !important;
+  --colorNeutralForeground2Pressed: #FFFFFF !important;
+  --colorNeutralForeground2Selected: #FFFFFF !important;
+  --colorNeutralForeground2BrandHover: #FFFFFF !important;
+  --colorNeutralForeground2BrandPressed: #FFFFFF !important;
+  --colorNeutralForeground2BrandSelected: #FFFFFF !important;
+  --colorNeutralForeground3BrandHover: #FFFFFF !important;
+  --colorNeutralForeground3BrandSelected: #FFFFFF !important;
+  --colorBrandForeground1: #FFFFFF !important;
+  --colorBrandForeground2: #FFFFFF !important;
+  --colorCompoundBrandForeground1: #FFFFFF !important;
+  --colorCompoundBrandForeground1Hover: #FFFFFF !important;
+  --colorCompoundBrandForeground1Pressed: #FFFFFF !important;
+  --colorBrandBackground: #FFFFFF !important;
+  --colorBrandStroke1: #FFFFFF !important;
+  --colorSubtleBackgroundHover: rgba(255, 255, 255, 0.14) !important;
+  --colorSubtleBackgroundPressed: rgba(0, 0, 0, 0.18) !important;
+  --colorSubtleBackgroundSelected: var(--zalo-rail-active) !important;
+  --colorTransparentBackgroundHover: rgba(255, 255, 255, 0.14) !important;
+  /* the rail's inner wrapper paints a neutral surface over the blue */
+  --colorNeutralBackground1: transparent !important;
+  --colorNeutralBackground2: transparent !important;
+  --colorNeutralBackground3: transparent !important;
+  --colorNeutralBackground4: transparent !important;
+  --colorNeutralBackground5: transparent !important;
+  --colorNeutralBackground6: transparent !important;
+}
+[data-tid="app-layout-area--nav"] .fui-Button {
+  color: rgba(255, 255, 255, 0.9) !important;
+  border-radius: 0 !important;
+}
+[data-tid="app-layout-area--nav"] .fui-Button:hover {
+  background: rgba(255, 255, 255, 0.14) !important;
+}
+[data-tid="app-layout-area--nav"] .fui-Button[aria-pressed="true"] {
+  background: var(--zalo-rail-active) !important;
+  color: #FFFFFF !important;
+}
+[data-tid="app-layout-area--nav"] .fui-Button * {
+  color: inherit !important;
+}
+[data-tid="app-layout-area--nav"] .fui-CounterBadge,
+[data-tid="app-layout-area--nav"] .fui-Badge:not(.fui-PresenceBadge) {
+  box-shadow: 0 0 0 2px var(--zalo-rail) !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   2. CHAT LIST: flat full-width rows, big avatars, light-blue selection
+   -------------------------------------------------------------------------- */
+[data-tid="app-layout-area--mid-nav"] {
+  border-right: 1px solid var(--msgr-divider) !important;
+}
+[data-tid="app-layout-area--mid-nav"] .fui-TreeItemLayout {
+  border-radius: 0 !important;
+}
+[data-tid="app-layout-area--mid-nav"] .fui-TreeItem[data-item-type="chat"] > .fui-TreeItemLayout {
+  min-height: 60px !important;
+}
+[data-tid="app-layout-area--mid-nav"] .fui-TreeItem[data-item-type="chat"] .fui-TreeItemLayout__iconBefore .fui-Avatar {
+  width: 44px !important;
+  height: 44px !important;
+}
+[data-tid="app-layout-area--mid-nav"] .fui-TreeItem[data-item-type="chat"] > .fui-TreeItemLayout:hover {
+  background: var(--msgr-surface-2) !important;
+}
+[data-tid="app-layout-area--mid-nav"] [data-tabster*="LeftRailSelectedItem"] > .fui-TreeItemLayout,
+[data-tid="app-layout-area--mid-nav"] [data-tabster*="LeftRailSelectedItem"] > .fui-TreeItemLayout:hover {
+  background: var(--msgr-accent-tint) !important;
+}
+[data-tid="app-layout-area--mid-nav"] .fui-ToggleButton {
+  border-radius: 6px !important;
+}
+[data-tid="search-f6-navigation-region"] form,
+[data-tid="search-f6-navigation-region"] form > div {
+  border-radius: 6px !important;
+}
+[data-tid="search-f6-navigation-region"] form {
+  background: #EAEDF0 !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   3. HEADER: white, dark-grey icons
+   -------------------------------------------------------------------------- */
+[data-tid="app-layout-area--header"] [data-tid="slot-measurer"],
+[data-tid="entity-header"] {
+  box-shadow: none !important;
+}
+[data-tid="chat-title"] {
+  font-size: 16px !important;
+}
+[data-tid="entity-header-toolbar"] .fui-Button,
+[data-tid="entity-header-toolbar"] .fui-MenuButton {
+  color: var(--msgr-fg-2) !important;
+  border-radius: 6px !important;
+}
+[data-tid="entity-header-toolbar"] .fui-Button:hover {
+  background: var(--msgr-surface-2) !important;
+}
+[data-tid="entity-header"] .fui-TabList .fui-Tab {
+  border-radius: 6px !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   4. BUBBLES: 8px corners, light blue for mine, dark text everywhere
+   -------------------------------------------------------------------------- */
+.fui-ChatMessage__body,
+.fui-ChatMyMessage__body {
+  padding: 10px 12px !important;
+  box-shadow: var(--zalo-bubble-shadow) !important;
+}
+.fui-ChatMyMessage__body {
+  background-attachment: scroll !important;
+  border: 1px solid var(--zalo-mine-border) !important;
+}
+
+.fui-ChatMyMessage__body a,
+.fui-ChatMyMessage__body .fui-Link,
+.fui-ChatMyMessage__body :is([itemtype*="Mention" i], [data-tid*="mention" i]) {
+  color: var(--msgr-accent) !important;
+}
+.fui-ChatMyMessage__body a {
+  text-decoration: none !important;
+}
+.fui-ChatMyMessage__body :is(code, pre) {
+  background: rgba(8, 28, 54, 0.06) !important;
+}
+
+/* Quoted reply: blue bar + faint tint, like Zalo's reply preview */
+:is(.fui-ChatMyMessage__body, .fui-ChatMessage__body) [role="group"]:has(> [data-tid="quoted-reply-card"]) > div:first-child {
+  background: var(--msgr-accent) !important;
+}
+.fui-ChatMyMessage__body [data-tid="quoted-reply-card"] {
+  background: rgba(0, 104, 255, 0.08) !important;
+}
+.fui-ChatMessage__body [data-tid="quoted-reply-card"] {
+  background: var(--msgr-surface-2) !important;
+}
+[data-tid="quoted-reply-card"] {
+  border-radius: 4px !important;
+}
+
+[data-tid="diverse-reaction-pill-button"][class*="checked"] {
+  background: var(--msgr-accent-tint) !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   5. COMPOSER: flat white bar across the pane, grey icons, blue send
+   -------------------------------------------------------------------------- */
+[data-tid="message-pane-footer"] {
+  background: var(--msgr-surface) !important;
+  border-top: 1px solid var(--msgr-divider) !important;
+  border-radius: 0 !important;
+}
+[data-tid="ckeditor"] {
+  border-radius: 0 !important;
+  padding-left: 4px !important;
+}
+[data-tid="ckeditor"] p.ck-placeholder::before {
+  content: "Nhập @, tin nhắn..." !important;
+}
+[data-tid="chat-pane-compose-message-footer"] :is([data-tid^="sendMessageCommands-"], [data-tid^="newMessageCommands-"]),
+[data-tid="chat-pane-compose-message-footer"] :is([data-tid^="sendMessageCommands-"], [data-tid^="newMessageCommands-"]) .ui-icon {
+  color: var(--msgr-fg-2) !important;
+}
+[data-tid="chat-pane-compose-message-footer"] [data-tid="sendMessageCommands-send"],
+[data-tid="chat-pane-compose-message-footer"] [data-tid="sendMessageCommands-send"] .ui-icon {
+  color: var(--msgr-accent) !important;
+}
+[data-tid="chat-pane-compose-message-footer"] :is([data-tid^="sendMessageCommands-"], [data-tid^="newMessageCommands-"]) {
+  border-radius: 6px !important;
+}
+[data-tid="chat-pane-compose-message-footer"] :is([data-tid^="sendMessageCommands-"], [data-tid^="newMessageCommands-"]):hover {
+  background: var(--msgr-surface-2) !important;
+}
+[data-tid="chat-pane-compose-message-footer"] .ui-alert {
+  border-radius: 6px !important;
+  background: var(--msgr-surface-2) !important;
+  box-shadow: none !important;
+}
+
+.fui-Tooltip__content { border-radius: 6px !important; }
+.fui-MenuPopover, .fui-PopoverSurface { border-radius: 8px !important; }

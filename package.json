@@ -1,0 +1,75 @@
+{
+  "name": "teams-messenger",
+  "productName": "Teams Messenger",
+  "version": "1.0.0",
+  "description": "Unofficial Microsoft Teams desktop app (Electron) with Messenger- and Zalo-style chat themes. Runs on macOS and Windows.",
+  "author": "Võ Thanh Danh (DannyEggy)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DannyEggy/Teams-Chat-Skin.git"
+  },
+  "main": "src/main.js",
+  "private": true,
+  "scripts": {
+    "start": "node scripts/start.js",
+    "dev": "node scripts/start.js --dev",
+    "dist:mac": "electron-builder --mac",
+    "dist:win": "electron-builder --win"
+  },
+  "build": {
+    "appId": "com.dannyeggy.teamsmessenger",
+    "productName": "Teams Messenger",
+    "files": [
+      "src/**",
+      "package.json"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "mac": {
+      "category": "public.app-category.social-networking",
+      "target": [
+        {
+          "target": "dir",
+          "arch": [
+            "arm64"
+          ]
+        },
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ],
+      "extendInfo": {
+        "NSCameraUsageDescription": "Teams Messenger cần camera cho cuộc gọi video trên Teams.",
+        "NSMicrophoneUsageDescription": "Teams Messenger cần micro cho cuộc gọi trên Teams."
+      }
+    },
+    "icon": "src/assets/icon.png",
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "shortcutName": "Teams Messenger"
+    }
+  },
+  "devDependencies": {
+    "electron": "^45.2.1",
+    "electron-builder": "^26.18.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
