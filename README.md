@@ -45,7 +45,16 @@ The builds are not code-signed, so the first launch shows a warning:
 
 Pick a theme in **View → Giao diện**. Your choice is remembered.
 
-**Personal Microsoft accounts** (Outlook, Hotmail, Live) use a different Teams site from work and school accounts. Choose **View → Loại tài khoản → Cá nhân** before signing in; the app then opens `teams.live.com` instead of `teams.microsoft.com`. Switch back with **Công ty / trường học**.
+### Signing in with a personal Microsoft account
+
+Personal accounts (Outlook, Hotmail, Live, or a Gmail address registered as a Microsoft account) use a different Teams site from work and school accounts. The app opens the work/school one by default.
+
+1. Run `npm start`.
+2. In the menu bar, choose **View → Loại tài khoản → Cá nhân (Outlook, Hotmail, Live)**. The app switches to `teams.live.com`.
+3. Click **Đăng nhập** (Sign in) at the top right and enter your email.
+4. On macOS, choose a password, an email or SMS code, or the Microsoft Authenticator app. Passkeys are not available in the app (see [Limitations](#limitations)).
+
+The app remembers the account type. Switch back with **View → Loại tài khoản → Công ty / trường học**.
 
 | Shortcut | Action |
 |---|---|
