@@ -31,8 +31,9 @@ The commands are the same in Terminal (macOS) and PowerShell or Command Prompt (
 
 | Command | Output in `dist/` | For |
 |---|---|---|
-| `npm run dist:mac` | `Teams Messenger-1.0.0-arm64.dmg` | Apple silicon Macs (M1 and later) |
-| `npm run dist:win` | `Teams Messenger Setup 1.0.0.exe` | 64-bit Windows |
+| `npm run dist:mac` | `Teams Messenger-1.0.0-arm64.dmg` and `-mac.zip` | Apple silicon Macs (M1 and later) |
+| `npm run dist:win` | `Teams Messenger Setup 1.0.0.exe` and `Teams Messenger Portable 1.0.0.exe` | 64-bit Windows |
+| `npm run dist:portable` | `Teams Messenger Portable 1.0.0.exe` | 64-bit Windows, single file, no install |
 
 The Windows installer can be built on a Mac. The macOS build must be made on a Mac.
 
@@ -40,6 +41,23 @@ The builds are not code-signed, so the first launch shows a warning:
 
 - **macOS**: right-click the app → **Open** → **Open**. If it is still blocked, run `xattr -cr "/Applications/Teams Messenger.app"`.
 - **Windows**: SmartScreen shows "Windows protected your PC" → **More info** → **Run anyway**.
+
+## Python version (experimental)
+
+A smaller take on the app lives in [python/teams_messenger.py](python/teams_messenger.py). It uses [pywebview](https://pywebview.flowrl.com) to open Teams in the system web view (WebKit on macOS, WebView2 on Windows) and injects the same theme CSS from `src/theme`. Just for fun; the Electron app above is the full version.
+
+Requires Python 3.9 or later.
+
+```bash
+pip3 install -r python/requirements.txt
+python3 python/teams_messenger.py
+```
+
+On Windows use `pip` and `python` instead. Add `--debug` to open the web inspector.
+
+The menu bar has **Giao diện** (pick a theme, turn it on or off, reload the CSS) and **Tài khoản** (work/school or personal account, reload Teams). Settings are kept in `Teams Messenger (Python)` under `~/Library/Application Support` on macOS or `%APPDATA%` on Windows.
+
+Compared with the Electron app it has no tray icon, unread badge, keyboard shortcuts, screen-share picker or per-site permission rules. On macOS it runs on Safari's engine, so Teams calls and screen sharing may be limited, and passkeys are turned off as in the Electron app. So far it has only been checked on macOS, up to the Microsoft sign-in page; the theme after sign-in and the Windows build are untested.
 
 ## Using the app
 

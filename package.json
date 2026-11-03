@@ -15,7 +15,8 @@
     "start": "node scripts/start.js",
     "dev": "node scripts/start.js --dev",
     "dist:mac": "electron-builder --mac",
-    "dist:win": "electron-builder --win"
+    "dist:win": "electron-builder --win",
+    "dist:portable": "electron-builder --win portable --x64"
   },
   "build": {
     "appId": "com.dannyeggy.teamsmessenger",
@@ -41,6 +42,12 @@
           "arch": [
             "arm64"
           ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "arm64"
+          ]
         }
       ],
       "extendInfo": {
@@ -53,6 +60,12 @@
       "target": [
         {
           "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
           "arch": [
             "x64"
           ]
@@ -71,6 +84,9 @@
       "enableEmbeddedAsarIntegrityValidation": true,
       "onlyLoadAppFromAsar": true,
       "grantFileProtocolExtraPrivileges": false
+    },
+    "portable": {
+      "artifactName": "Teams Messenger Portable ${version}.exe"
     }
   },
   "devDependencies": {
